@@ -13,9 +13,9 @@ class CSVReaderTest {
 
     private InputStream getResource(String filename) throws Exception {
         InputStream in = CSVReaderTest.class.getResourceAsStream(filename);
-        if (in == null) throw new NullPointerException(filename + " was not found.");
+        if (in == null)
+            throw new NullPointerException(filename + " was not found.");
         return in;
-        
     }
 
     @Test
@@ -27,7 +27,8 @@ class CSVReaderTest {
         Optional<String> fileContents = csvReader.getFileContents(in);
 
         assertTrue(fileContents.isPresent(), "The contents of the file could not be returned.");
-        
+
         logger.info(fileContents.get());
     }
+
 }
