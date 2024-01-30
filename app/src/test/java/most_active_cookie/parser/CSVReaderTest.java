@@ -38,9 +38,18 @@ class CSVReaderTest {
         Map<String, Integer> data = csvReader.getCookieCount(in);
         assertFalse(data.isEmpty(), "Files were not found");
 
-        String keyExample = "SAZuXPGUrfbcn5UA";
-        Integer valueExample = 2;
-        assertEquals(valueExample, data.get(keyExample));
+        String key = "SAZuXPGUrfbcn5UA";
+        Integer valueExpected = 2;
+        assertEquals(valueExpected, data.get(key));
+    }
+
+    @Test
+    void canHandleAnEmptyCSVFile() throws Exception {
+        String filename = "/empty_file.csv";
+        InputStream in = getResource(filename);
+        Optional<String> fileContents = csvReader.getFileContents(in);
+        assertTrue(fileContents.isPresent());
+        assertEquals("", fileContents.get());
     }
 
 }
