@@ -3,22 +3,46 @@
  */
 package most_active_cookie;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class App {
     public String getGreeting() {
         return "Hello World!";
     }
 
+    public static final String REGEX_FILE_PATTERN = "[-_.A-Za-z0-9]+\\.csv";
+    public static final String REGEX_DATE_PATTERN = "\\d{4}-\\d{2}-\\d{2}";
+
     public static void main(String[] args) {
 
         if (args.length != 4 || !"-f".equals(args[0]) || !"-d".equals(args[2])) {
-            System.out.println("Usage: ./[cmd] -f [FILENAME] -d [DATE]");
+            System.out.println("Usage: ./[cmd] -f file -d date");
             System.exit(1);
         }
 
         String filename = args[1];
-        
-        String date = args[3];
 
-        // System.out.println(new App().getGreeting());
+        if (!filename.matches(REGEX_FILE_PATTERN)) {
+            System.out.println("Error: invalid file. Only CSV files allowed.");
+            System.exit(1);
+        }
+
+        String dateString = args[3];
+
+        if (!dateString.matches(REGEX_DATE_PATTERN)) {
+            System.out.println("Error: invalid date. Date must be provided as YYYY-MM-DD.");
+            System.exit(1);
+        }
+        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(dateString, formatter);
+
+        System.out.println(date);
+
+		// //Instance in UTC
+		// ZonedDateTime zdtInstanceAtUTC = zdtInstanceAtOffset.withZoneSameInstant(ZoneOffset.UTC);
+        // System.out.println(zdtInstanceAtUTC);
+
     }
 }
