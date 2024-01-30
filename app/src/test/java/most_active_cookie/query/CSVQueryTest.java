@@ -28,14 +28,12 @@ public class CSVQueryTest {
   }
 
   @BeforeAll
-  public static void setup() {
+  static void setup() {
     String filename = "/cookie_log.csv";
 
     try (InputStream in = getResource(filename)) {
       data = new CSVReader().parseFile(in);
-      // query = new CSVQuery(data);
     } catch (Exception e) {
-      // e.printStackTrace();
       System.err.println(e);
       System.exit(1);
     }
@@ -44,26 +42,22 @@ public class CSVQueryTest {
   @Test
   public void canFindTheMostActiveCookie() {
     List<String> result = query.getMostActiveCookie(data, "2018-12-09");
-    System.err.println();
     assertEquals(1, result.size());
     assertEquals("AtY0laUfhglK3lC7", result.get(0));
   }
-  
+
   @Test
   public void canReturnMultipleActiveCookies() {
     List<String> result = query.getMostActiveCookie(data, "2018-12-08");
-    System.err.println();
     assertEquals(3, result.size());
-    
-    List<String> expected = Arrays.asList("SAZuXPGUrfbcn5UA", "4sMM2LxV07bPJzwf","fbcn5UAVanZf6UtG");
+
+    List<String> expected = Arrays.asList("SAZuXPGUrfbcn5UA", "4sMM2LxV07bPJzwf", "fbcn5UAVanZf6UtG");
     assertTrue(result.containsAll(expected));
   }
-  
+
   @Test
   public void returnsNothingIfDateNotFound() {
     List<String> result = query.getMostActiveCookie(data, "2018-12-06");
-    System.err.println();
-    System.err.println(result.get(0));
     assertTrue(result.isEmpty());
   }
 }
