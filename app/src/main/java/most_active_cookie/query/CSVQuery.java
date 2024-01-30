@@ -8,13 +8,10 @@ import java.util.stream.Collectors;
 
 public class CSVQuery {
 
-  public Map<String, List<String>> data;
-
-  public CSVQuery(Map<String, List<String>> data) {
-    this.data = data;
+  public CSVQuery() {
   }
 
-  public Map<String, Integer> filterByDateAndCount(String date) {
+  public Map<String, Integer> filterByDateAndCount(Map<String, List<String>> data, String date) {
     Map<String, Integer> transform = data
         .entrySet()
         .stream()
@@ -27,8 +24,8 @@ public class CSVQuery {
     return transform;
   }
 
-  public List<String> getMostActiveCookie(String date) {
-    Map<String, Integer> transform = filterByDateAndCount(date);
+  public List<String> getMostActiveCookie(Map<String, List<String>> data, String date) {
+    Map<String, Integer> transform = filterByDateAndCount(data, date);
     int maxCount = Collections.max(transform.values());
     return transform
         .entrySet()
