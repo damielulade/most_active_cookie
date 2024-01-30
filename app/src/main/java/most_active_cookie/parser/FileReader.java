@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class FileReader {
@@ -15,7 +16,7 @@ public abstract class FileReader {
 
   public Optional<String> getFileContents(InputStream in) {
     try (Stream<String> lines = handleInputStream(in)) {
-      String result = lines.reduce("", (temp, line) -> temp + line + "\n");
+      String result = lines.collect(Collectors.joining("\n"));
       return Optional.of(result);
     } catch (Exception e) {
       System.err.println(e);
