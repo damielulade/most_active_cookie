@@ -3,46 +3,47 @@
  */
 package most_active_cookie;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+
+import most_active_cookie.parser.CSVReader;
+import most_active_cookie.query.CSVQuery;
 
 public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
-
-    public static final String REGEX_FILE_PATTERN = "[-_.A-Za-z0-9]+\\.csv";
+    public static final String REGEX_FILE_PATTERN = "[-/_.A-Za-z0-9]+\\.csv";
     public static final String REGEX_DATE_PATTERN = "\\d{4}-\\d{2}-\\d{2}";
 
     public static void main(String[] args) {
 
-        if (args.length != 4 || !"-f".equals(args[0]) || !"-d".equals(args[2])) {
-            System.out.println("Usage: ./[cmd] -f file -d date");
+        try {
+            if (args.length != 4 || !"-f".equals(args[0]) || !"-d".equals(args[2])) {
+                throw new Exception("Usage: ./[cmd] -f file -d date");
+            }
+
+            String filename = args[1];
+            if (!filename.matches(REGEX_FILE_PATTERN)) {
+                throw new Exception("Error: invalid file. Only CSV files allowed.");
+            }
+
+            String dateString = args[3];
+            if (!dateString.matches(REGEX_DATE_PATTERN)) {
+                throw new Exception("Error: invalid date. Date must be provided as YYYY-MM-DD.");
+            }
+
+            CSVReader csvReader = new CSVReader();
+            CSVQuery csvQuery = new CSVQuery();
+            InputStream in = new FileInputStream(new File(filename));
+            Map<String, List<String>> data = csvReader.parseFile(in);
+            List<String> cookieList = csvQuery.getMostActiveCookie(data, dateString);
+            cookieList.forEach(System.out::println);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             System.exit(1);
         }
-
-        String filename = args[1];
-
-        if (!filename.matches(REGEX_FILE_PATTERN)) {
-            System.out.println("Error: invalid file. Only CSV files allowed.");
-            System.exit(1);
-        }
-
-        String dateString = args[3];
-
-        if (!dateString.matches(REGEX_DATE_PATTERN)) {
-            System.out.println("Error: invalid date. Date must be provided as YYYY-MM-DD.");
-            System.exit(1);
-        }
-        
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate date = LocalDate.parse(dateString, formatter);
-
-        System.out.println(date);
-
-		// //Instance in UTC
-		// ZonedDateTime zdtInstanceAtUTC = zdtInstanceAtOffset.withZoneSameInstant(ZoneOffset.UTC);
-        // System.out.println(zdtInstanceAtUTC);
 
     }
 }
