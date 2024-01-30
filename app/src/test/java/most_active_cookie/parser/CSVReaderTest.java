@@ -52,4 +52,16 @@ class CSVReaderTest {
         assertEquals("", fileContents.get());
     }
 
+    @Test
+    void canHandleOnlyHeadersInACSVFile() throws Exception {
+        String filename = "/only_headers.csv";
+        InputStream in = getResource(filename);
+
+        Optional<String> fileContents = csvReader.getFileContents(in);
+        assertTrue(fileContents.isPresent());
+
+        String expected = "cookie,timestamp";
+        assertEquals(expected, fileContents.get());
+    }
+
 }
