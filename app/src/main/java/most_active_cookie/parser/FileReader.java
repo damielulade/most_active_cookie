@@ -3,7 +3,6 @@ package most_active_cookie.parser;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -14,8 +13,14 @@ public abstract class FileReader {
     return bufferedReader.lines();
   }
 
-  public abstract Optional<String> getFileContents(InputStream in);
-
-  public abstract Map<String, Integer> parseFileData(InputStream in);
+  public Optional<String> getFileContents(InputStream in) {
+    try (Stream<String> lines = handleInputStream(in)) {
+      String result = lines.reduce("", (temp, line) -> temp + line + "\n");
+      return Optional.of(result);
+    } catch (Exception e) {
+      System.err.println(e);
+      return Optional.empty();
+    }
+  }
 
 }
