@@ -1,21 +1,14 @@
-package most_active_cookie;
+package most_active_cookie.parser;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class CSVReader {
+public class CSVReader extends FileReader {
 
   public CSVReader() {
-  }
-
-  private Stream<String> handleInputStream(InputStream in) {
-    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
-    return bufferedReader.lines();
   }
 
   public Optional<String> getFileContents(InputStream in) {
@@ -28,7 +21,7 @@ public class CSVReader {
     }
   }
 
-  public Map<String, Integer> parseCSVData(InputStream in) {
+  public Map<String, Integer> parseFileData(InputStream in) {
     Map<String, Integer> data = new HashMap<>();
     try (Stream<String> lines = handleInputStream(in)) {
       lines.skip(1).forEach((line) -> {

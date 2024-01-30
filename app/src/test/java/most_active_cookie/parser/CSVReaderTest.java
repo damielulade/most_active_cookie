@@ -1,6 +1,7 @@
-package most_active_cookie;
+package most_active_cookie.parser;
 
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.InputStream;
@@ -11,7 +12,7 @@ import java.util.logging.Logger;
 class CSVReaderTest {
 
     static final Logger logger = Logger.getLogger(CSVReaderTest.class.getName());
-    static final CSVReader csvReader = new CSVReader();
+    static final FileReader csvReader = new CSVReader();
 
     private InputStream getResource(String filename) throws Exception {
         InputStream in = CSVReaderTest.class.getResourceAsStream(filename);
@@ -36,7 +37,7 @@ class CSVReaderTest {
     void canParseCSVFileInCorrectFormat() throws Exception {
         String filename = "/cookie_log.csv";
         InputStream in = getResource(filename);
-        Map<String, Integer> data = csvReader.parseCSVData(in);
+        Map<String, Integer> data = csvReader.parseFileData(in);
         assertFalse(data.isEmpty(), "Files were not found");
 
         String keyExample = "SAZuXPGUrfbcn5UA";
