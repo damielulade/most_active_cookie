@@ -9,6 +9,16 @@ public class App {
     }
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+
+        if (args.length != 4 || !"-f".equals(args[0]) || !"-d".equals(args[2])) {
+            System.out.println("Usage: ./[cmd] -f [FILENAME] -d [DATE]");
+            System.exit(1);
+        }
+
+        String filename = args[1];
+        
+        String date = args[3];
+
+        // System.out.println(new App().getGreeting());
     }
 }
